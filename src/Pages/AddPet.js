@@ -4,11 +4,11 @@ import React, { useContext, useState, useRef, useEffect } from "react";
 import { Row, Col, Button } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
-import FloatingLabel from "react-bootstrap/FloatingLabel";
 import authContext from "../Context/AuthContext";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function AddPet() {
   const [dietaryInfo, setDietaryInfo] = useState([]);
@@ -16,6 +16,7 @@ export default function AddPet() {
   const ref = useRef(null);
   const [hypo, setHypo] = useState(false);
   const [adoptionStatus, setAdoptionStatus] = useState("available");
+  const [petImage, setPetImage] = useState("");
   const { baseUrl, headers, userInfo } = useContext(authContext);
 
   const owner = userInfo._id;
@@ -23,7 +24,7 @@ export default function AddPet() {
   const navigate = useNavigate();
   const [newPetInfo, setNewPetInfo] = useState({
     adoptionStatus: adoptionStatus,
-    owner: owner,
+    owner: "",
   });
 
   useEffect(() => {
@@ -38,20 +39,50 @@ export default function AddPet() {
       ...newPetInfo,
       [e.target.name]: e.target.value,
       hypoAllergenic: hypo,
-      dietary: [dietaryInfo],
+      adoptionStatus: adoptionStatus
     });
   };
 
+  const handleImage = (e) => {
+    setPetImage(e.target.files[0]);
+  };
+
+  const notify = (props) => {
+    toast.info(props, { position: toast.POSITION.BOTTOM_RIGHT });
+  };
+
   const postPet = async (e) => {
-    e.preventDefault();
-    console.log(newPetInfo);
-    console.log(headers);
-    const res = await axios.post(
-      `${baseUrl}/pets/createpet`,
-      newPetInfo,
-      headers
-    );
-    await console.log(res.data);
+    try {
+      e.preventDefault();
+      console.log(dietaryInfo);
+      const petwithImage = new FormData();
+      petwithImage.append("picture", petImage);
+      for (let i = 0; i < dietaryInfo.length; i++) {
+        petwithImage.append("dietary[]", dietaryInfo[i]);
+      }
+      for (let key in newPetInfo) {
+        petwithImage.append(key, newPetInfo[key]);
+      }
+      const res = await axios.post(
+        `${baseUrl}/pets/createpet`,
+        petwithImage,
+        headers
+      );
+      await console.log(res.data);
+      if (res.status === 200) {
+        toast.info(`New pet "${res.data.name}" created`);
+        setDietaryInfo([]);
+        setHypo(false);
+        setAdoptionStatus("available");
+        setPetImage("");
+        setNewPetInfo({
+          adoptionStatus: adoptionStatus,
+          owner: owner,
+        });
+      }
+    } catch (err) {
+      toast.warn(err.message);
+    }
   };
 
   const handleDietChange = (e) => {
@@ -81,6 +112,7 @@ export default function AddPet() {
 
   return (
     <div className="profileForm">
+      <ToastContainer />
       <h1>Add a new pet</h1>
       <Form onSubmit={postPet}>
         <Row>
@@ -191,20 +223,21 @@ export default function AddPet() {
             Picture
           </Form.Label>
           <Form.Control
-            type={"text"}
+            type={"file"}
+            accept={"image/*"}
             name={"picture"}
             placeholder={"picture"}
-            onChange={handleChange}
+            onChange={handleImage}
             className={"changeItem"}
           ></Form.Control>
         </Form.Group>
-        
+
         <Form.Group>
           <Form.Label column sm={2}>
             Bio
           </Form.Label>
           <Form.Control
-            as={'textarea'}
+            as={"textarea"}
             name={"bio"}
             placeholder={"bio"}
             onChange={handleChange}

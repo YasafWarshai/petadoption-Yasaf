@@ -12,13 +12,17 @@ import { useState, useEffect } from "react";
 import PetProfile from "./Pages/petProfile";
 import PetSearchPage from "./Pages/PetSearchPage";
 import AddPet from "./Pages/AddPet";
-
+import PrivateRoute from "./Components/PrivateRoute";
+import AdminRoute from "./Components/AdminRoute";
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 
 
 const App = () => {
   const [token, setToken] = useState('')
   const [petsList, setPetsList] = useState([])
+  const [savedList, setSavedList] = useState([])
   const [userInfo, setUserInfo] = useState({})
   useEffect(() => {
     const token = JSON.parse(localStorage.getItem('token'))
@@ -37,16 +41,15 @@ const App = () => {
     <>
     <div className="App"> 
       <authContext.Provider value={{ headers, userInfo, setUserInfo, baseUrl, token, setToken }}>
-      <petContext.Provider value = {{petsList, setPetsList,  defaultImage,  selectedPet, setSelectedPet}}>
+      <petContext.Provider value = {{petsList, setPetsList, savedList, setSavedList,  defaultImage,  selectedPet, setSelectedPet}}>
       <NavBar />
       <Routes>
         <Route index element={<Home />} />
-        <Route exact path="/profile" element={<ProfilePage />} />
-        <Route exact path="/mypets" element={<MyPets />} />
+        <Route exact path="/profile" element={<PrivateRoute><ProfilePage /></PrivateRoute>} />
+        <Route exact path="/mypets" element={<PrivateRoute><MyPets /></PrivateRoute>} />
         <Route exact path="/petprofile/:petId" element={<PetProfile />} />
         <Route exact path="/search" element={<PetSearchPage />} />
-        <Route exact path="/addpet" element={<AddPet />} />
-
+        <Route exact path="/addpet" element={<AdminRoute><AddPet /></AdminRoute>} />
       </Routes>
       </petContext.Provider>
       </authContext.Provider>

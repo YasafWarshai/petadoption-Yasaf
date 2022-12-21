@@ -1,37 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald&family=Rajdhani:wght@500&display=swap');
+
 * {
   box-sizing: border-box;
-   color: #000000;
-   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  color: #000000;
+  font-family: 'Rajdhani';
 }
-body{
+
+body {
   background-color: white;
 }
-
-
 
 .navigation {
   background-color: #A3BBA3;
 }
 
 .card-header {
-  background-color:#F5E4E3;
+  background-color: #F5E4E3;
 }
 
 .navItem {
-    color: black;
-    text-decoration: none;
-    padding: 15px;
-  }
+  color: black;
+  text-decoration: none;
+  padding: 15px;
+}
 
-  .navItem:hover {
-    color: white;
-  }
+.navItem:hover {
+  color: white;
+}
 
-  .profileForm {
-    width: 100vw;
-    padding: 0 30vw;
-    justify-content: center;
-  
+.profileForm {
+  width: 100vw;
+  padding: 0 30vw;
+  justify-content: center;
+
 }
 
 .petCard {
@@ -55,9 +56,9 @@ body{
 
 
 .petProfileImage {
-  max-width: 25%;
+  max-width: 20%;
   min-width: 5%;
-  border-radius: 100%;
+  border-radius: 75%;
 }
 
 .petBio {
@@ -72,12 +73,12 @@ body{
 }
 
 .extraInfo {
-font-weight: bold;
-display: flex;
-justify-content: space-around;
-width: 100vw;
-list-style: none;
-padding: 0 25vw;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-around;
+  width: 100vw;
+  list-style: none;
+  padding: 0 25vw;
 }
 
 .cardContainer {
@@ -89,8 +90,7 @@ padding: 0 25vw;
 
 
 .petName {
- font-size:  xx-large;
-  background-color: white;
+  font-size: xx-large;
 }
 
 .searchBody {
@@ -101,11 +101,11 @@ padding: 0 25vw;
 }
 
 .searchForm {
- flex-basis: 50%;
- padding: 15px 10vw;
+  flex-basis: 50%;
+  padding: 15px 10vw;
 }
 
-.logo{
+.logo {
   max-height: 55px;
 }
 
@@ -153,21 +153,22 @@ padding: 0 25vw;
 .profileBody {
   display: flex;
   flex-direction: column;
+  height: 100vh;
 }
 
 .profCard {
- align-self: center;
+  align-self: center;
 }
 
-.profButton{
+.profButton {
   align-self: center;
   width: 10vw;
   margin: 1rem;
 }
 
 .generalInfo {
- padding: 0 20vw;
-align-self: space-around;
+  padding: 0 20vw;
+  align-self: space-around;
 }
 
 .welcomeHeader {
@@ -180,8 +181,8 @@ align-self: space-around;
 }
 
 .form-check-input:checked {
-  background-color:#5d8c5d !important;
-  border-color:#A3BBA3 !important;
+  background-color: #5d8c5d !important;
+  border-color: #A3BBA3 !important;
 }
 
 .form-check-input:focus {
@@ -189,4 +190,8 @@ align-self: space-around;
   color: lightGray;
   outline: 0;
   box-shadow: none !important;
+}
+
+.profileBody {
+  background-color: #F5E4E3;
 }

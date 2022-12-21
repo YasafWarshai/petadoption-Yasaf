@@ -1,6 +1,5 @@
 import { createContext } from "react";
 
-const petContext = createContext()
+const petContext = createContext();
 
 export default petContext;
-
